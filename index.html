@@ -69,6 +69,12 @@
             font-weight: bold;
             margin-top: 20px;
         }
+        .correct-answer {
+            background-color: #d4edda;
+        }
+        .incorrect-answer {
+            background-color: #f8d7da;
+        }
     </style>
 </head>
 <body>
@@ -221,10 +227,23 @@
             let score = 0;
             quizData.forEach((questionData, questionIndex) => {
                 const answerContainer = quizContainer.querySelector(`[name=question${questionIndex}]:checked`);
+                const options = quizContainer.querySelectorAll(`[name=question${questionIndex}]`);
+                
+                options.forEach(option => {
+                    const label = option.parentElement;
+                    const selectedAnswer = parseInt(option.value);
+                    if (selectedAnswer === questionData.correct) {
+                        label.classList.add('correct-answer');
+                    } else {
+                        if (option.checked) {
+                            label.classList.add('incorrect-answer');
+                        }
+                    }
+                });
+
                 if (answerContainer) {
                     const selectedAnswer = parseInt(answerContainer.value);
-                    const correctAnswerIndex = questionData.options.indexOf(questionData.options[questionData.correct]);
-                    if (selectedAnswer === correctAnswerIndex) {
+                    if (selectedAnswer === questionData.correct) {
                         score++;
                     }
                 }
